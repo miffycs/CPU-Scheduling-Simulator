@@ -1,16 +1,18 @@
 
+package cpuscheduler;
+
 /*
  * @author: Miffy Chen
  * @date:   2018/11/15
  * 
- * Node.java
+ * Process.java
  * 
  */
 
 /**
- * 
+ * Data of each process in queue
  */
-public class Node {
+public class Process {
 	
 	// Time moves in increments of 0.1
 	
@@ -36,11 +38,7 @@ public class Node {
 	private boolean isActive = false;
 	private boolean isFinished = false;
 	
-	public Node() {
-		
-	}
-	
-	public Node(int PID, double burstTime, double delayTime, int priority) {
+	public Process(int PID, double burstTime, double delayTime, int priority) {
 		this.PID = PID;
 		this.burstTime = burstTime;
 		this.totalBurstTime = burstTime;
@@ -48,6 +46,7 @@ public class Node {
 		this.priority = priority;
 	}
 	
+	// Time moves in increments of 0.1
 	public void executing(double timeNow) {
 		
 		// is actively executing
@@ -104,6 +103,28 @@ public class Node {
 		
 		// set current time to parameter time
 		curTime = timeNow;
+	}
+	
+	@Override
+	public String toString() {
+		// TODO
+		return "";
+	}
+	
+	// keep data but reset the times
+	public void resetAll() {
+		// reset only the times
+		this.burstTime = this.totalBurstTime;
+		this.startTime = 0.0;
+		this.waitTime = 0.0;
+		this.responseTime = 0.0;
+		this.turnAroundTime = 0.0;
+		
+		// reset status
+		this.isActive = false;
+		this.isStarted = false;
+		this.isFinished = false;
+		this.isArrived = false;
 	}
 	
 	public int getPID() {

@@ -18,12 +18,10 @@ import java.util.PriorityQueue;
  */
 public class Scheduler_SJF extends Scheduler {
 	
+	// not sure if we want to do preemptive???
 	private boolean preemptive;
 	private PriorityQueue<Process> pq;
 	
-	/**
-	 * Constructor
-	 */
 	public Scheduler_SJF(boolean isPreemptive) {
 		preemptive = isPreemptive;
 		pq = new PriorityQueue<>(new Comparator<Process>() {

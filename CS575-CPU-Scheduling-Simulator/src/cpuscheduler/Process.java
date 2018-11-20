@@ -1,10 +1,6 @@
 
 package cpuscheduler;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.util.Random;
-
 /*
  * @author: Miffy Chen
  * @date:   2018/11/15
@@ -49,29 +45,6 @@ public class Process {
 		this.delayTime = delayTime;
 		this.priority = priority;
 	}
-	
-	// used to create random processes by the CPU
-	public Process(int PID, double meanB, double stddevB, double meanD, double stddevD){
-		/*
-		 *  Passing in:
-		 *  PID
-		 *  Mean Burst = 8.33
-		 *  Std Dev Burst = 2.1
-		 *  Mean Delay = 2.46
-		 *  Std Dev Delay = 0.7
-		 */
-		this.PID = PID;
-        // using random generator to come up with 
-        Random gen = new Random(System.nanoTime());
-        DecimalFormat df = new DecimalFormat("##.##");
-        df.setRoundingMode(RoundingMode.CEILING);
-        
-        // gen.nextGaussian() returns double of -1.0 to 1.0
-        this.burstTime = Double.valueOf(df.format(gen.nextGaussian() * stddevB + meanB));
-        this.totalBurstTime = this.burstTime;
-        this.delayTime = Double.valueOf(df.format(gen.nextGaussian() * stddevD + meanD));
-        this.priority = (int) Math.round((Math.random() * 9));
-    }
 	
 	// Time moves in increments of 0.1
 	public void executing(double timeNow) {

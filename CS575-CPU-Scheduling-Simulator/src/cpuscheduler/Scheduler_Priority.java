@@ -1,8 +1,8 @@
 /*
  * @author: Miffy Chen
- * @date:   2018/11/15
+ * @date:   2018/11/19
  * 
- * Scheduler_SJF.java
+ * Scheduler_Priority.java
  * 
  */
 
@@ -14,23 +14,20 @@ import java.util.PriorityQueue;
 
 
 /**
- * Shortest Job First
+ * Preemptive Priority
  */
-public class Scheduler_SJF extends Scheduler {
+public class Scheduler_Priority extends Scheduler {
 	
 	private boolean preemptive;
 	private PriorityQueue<Process> pq;
 	
-	/**
-	 * Constructor
-	 */
-	public Scheduler_SJF(boolean isPreemptive) {
+	public Scheduler_Priority(boolean isPreemptive) {
 		preemptive = isPreemptive;
 		pq = new PriorityQueue<>(new Comparator<Process>() {
 			
 			@Override
 			public int compare(Process o1, Process o2) {
-				return (o1.getBurstTime() >= o2.getBurstTime()) ? 1 : -1;
+				return (o1.getPriority() >= o2.getPriority()) ? 1 : -1;
 			}
 		});
 	}
@@ -56,8 +53,8 @@ public class Scheduler_SJF extends Scheduler {
 	
 	@Override
 	public Process getNextProc(double currentTime) {
-		if ((isPreemptive() && pq.peek().isIsArrived()) || activeProc == null
-		        || activeProc.isIsFinished()) {
+		if (((isPreemptive() && pq.peek().isIsArrived()) || activeProc == null
+		        || activeProc.isIsFinished())) {
 			activeProc = pq.peek();
 		}
 		return activeProc;
@@ -74,7 +71,7 @@ public class Scheduler_SJF extends Scheduler {
 	
 	@Override
 	public String getName() {
-		return !isPreemptive() ? "SJF" : "Premetive SJF";
+		return !isPreemptive() ? "Priority" : "Preemptive Priority";
 	}
 	
 }

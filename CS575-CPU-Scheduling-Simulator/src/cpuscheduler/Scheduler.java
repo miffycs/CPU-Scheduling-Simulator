@@ -1,5 +1,5 @@
-package cpuscheduler;
 
+package cpuscheduler;
 
 /*
  * @author: Miffy Chen

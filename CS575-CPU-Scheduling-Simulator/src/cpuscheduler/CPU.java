@@ -4,7 +4,6 @@ package cpuscheduler;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Random;
 
 
 /*
@@ -32,7 +31,7 @@ public class CPU {
 	// stores processes from procQueue IF process is ready to be executed
 	private ArrayList<Process> readyQueue = new ArrayList<>();
 	
-	// Generate random data for processes???
+	// Generate random data for processes
 	private static ArrayList<String> randomData = new ArrayList<>();
 	
 	private Process preProc = null;
@@ -41,6 +40,8 @@ public class CPU {
 	
 	private double AWT = 0.0;			// Average Wait Time
 	private double ATT = 0.0;			// Average Turnaround Time
+	private double Util = 0.0;			// Utility
+	private double Potency = 0.0;		// Potency
 	
 	private String simData = "";		// store data about current Process as it's being run
 	private String report = "";			// final report
@@ -91,6 +92,20 @@ public class CPU {
 		
 		// initialize ProcQueue
 		initProcQueue(allProcs);
+	}
+	
+	public static void randProc(int processNum) {
+		Process proc;
+		randomData.clear();
+		for (int i = 0; i < processNum; i++) {
+			// PID, meanBurst, stdDevBurst, meanDelay, stdDevDelay
+			proc = new Process(i + 1, 8.33, 2.1, 2.46, 0.7);
+			
+			// add random data as a String, in the format of:
+			// burstTime delayTime priority
+			randomData.add(
+			        proc.getBurstTime() + " " + proc.getDelayTime() + " " + proc.getPriority());
+		}
 	}
 	
 	// initialize procQueue, the queue that will contain data after calculation
@@ -169,30 +184,13 @@ public class CPU {
 		}
 	}
 	
-	// set scheduling method from a String
-	public static Scheduler setSchMethod(String method) {
-		
-		String split[] = method.split(":");
-		
-		switch (split[0]) {
-			case "FCFS":
-				return new Scheduler_FCFS();
-			case "PSJF":
-				return new Scheduler_SJF(true);
-			case "SJF":
-				return new Scheduler_SJF(false);
-			// case "Round Robin":
-			// return new Scheduler_RR();
-		}
-		return null;
-	}
-	
-	void Schedule() {
+	public void Schedule() {
 		Process proc = null;
 		activeProc = sm.getNextProc(currentTime);
 		if (activeProc != preProc && preProc != null) {
-			if (cs > 0.4)
+			if (cs > 0.4) {
 				currentTime += (cs - 0.4);
+			}
 			csCount++;
 		}
 		if (activeProc != null) {
@@ -208,16 +206,73 @@ public class CPU {
 		}
 	}
 	
+	// create report
 	private void report() {
-		//TODO
+		// new null Process
+		Process proc = null;
+		// process count
+		int procCount = 0;
+		
+		for (int i = 0; i < allProcs.size(); i++) {
+			proc = (Process) allProcs.get(i);
+			
+			if (proc.isIsFinished()) {
+				procCount++;
+				double waited = proc.getWaitTime();
+				double turned = proc.getTurnAroundTime();
+				AWT += waited;
+				ATT += turned;
+			}
+		}
+		
+		if (procCount > 0) {
+			AWT /= (double) procCount;
+			ATT /= (double) procCount;
+		}
+		else {
+			AWT = 0.0;
+			ATT = 0.0;
+		}
+		
+		Util = ((currentTime - (cs * csCount)) / currentTime) * 100;
+		Potency = currentTime / procCount;
+		
+		report = "AWT : " + String.format("%.1f", AWT) + "\nATT : " + String.format("%.1f", ATT)
+		        + "\nUtil : " + String.format("%.1f", Util) + "%\nPotency : "
+		        + String.format("%.1f", Potency);
+	}
+	
+	// set scheduling method from a String
+	public static Scheduler setSchMethod(String method) {
+		
+		String split[] = method.split(":");
+		
+		switch (split[0]) {
+			case "FCFS":
+				return new Scheduler_FCFS();
+			case "PSJF":
+				return new Scheduler_SJF(true);
+			case "SJF":
+				return new Scheduler_SJF(false);
+			case "Preemptive Priority":
+				return new Scheduler_Priority(true);
+			case "Priority":
+				return new Scheduler_Priority(false);
+			case "Round Robin":
+				return new Scheduler_RR(Double.valueOf(split[1]));
+			case "Lottery":
+				return new Scheduler_Lottery();
+		}
+		return null;
 	}
 	
 	public void Simulate() {
 		
-		boolean check = true;
+		boolean check;
+		check = true;
 		
 		// text format
-		DecimalFormat df = new DecimalFormat("##.##");
+		DecimalFormat df = new DecimalFormat("#.##");
 		df.setRoundingMode(RoundingMode.FLOOR);
 		
 		while (check) {
@@ -234,7 +289,7 @@ public class CPU {
 					refProcQueue();
 					refReadyQueue();
 				}
-				currentTime += 1e-1;
+				currentTime += 0.1;
 				currentTime = Double.valueOf(df.format(currentTime));
 			}
 		}
@@ -251,6 +306,8 @@ public class CPU {
 		this.csCount = 0;
 		this.AWT = 0.0;
 		this.ATT = 0.0;
+		this.Util = 0.0;
+		this.Potency = 0.0;
 		
 		for (int i = 0; i < allProcs.size(); i++) {
 			proc = (Process) allProcs.get(i);
@@ -263,11 +320,41 @@ public class CPU {
 	}
 	
 	public Process getActiveProc() {
-		return activeProc;
+		return this.activeProc;
 	}
 	
 	public double getCurrentTime() {
-		return currentTime;
+		return this.currentTime;
 	}
 	
+	public String getSimData() {
+		System.err.println("run");
+		return this.simData;
+	}
+	
+	public String getReport() {
+		return this.report;
+	}
+	
+	public void setCs(double cs) {
+		if (cs > 0.4) {
+			this.cs = cs;
+		}
+	}
+	
+	public void resetSimData() {
+		this.simData = "";
+	}
+	
+	public void resetReport() {
+		this.report = "";
+	}
+	
+	public ArrayList<Process> getAllProcs() {
+		return allProcs;
+	}
+	
+	public static ArrayList<String> getRandomData() {
+		return randomData;
+	}
 }

@@ -32,7 +32,10 @@ public class Scheduler_FCFS extends Scheduler {
 			
 			@Override
 			public int compare(Process o1, Process o2) {
-				return (o1.getArrivalTime() >= o2.getArrivalTime()) ? 1 : -1;
+				if (o1.getArrivalTime() >= o2.getArrivalTime()) {
+					return 1;
+				}
+				return -1;
 			}
 		});
 	}

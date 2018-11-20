@@ -11,10 +11,10 @@
 ### Progress:
 * [X] 11/16 - Basic program structure down
 * [X] 11/16 - First meeting
-* [ ] 11/20 - Basic structure completed
+* [X] 11/20 - Basic structure completed
 * [ ] 11/25 - Test cases completed
 * [ ] 11/27 - Testing completed
-* [ ] 11/29 - GUI completed
+* [X] 11/29 - GUI completed
 * [ ] 11/29 - 1st week of presentations
 * [ ] &nbsp;&nbsp;&nbsp;TBD - Second meeting (if needed)
 * [ ] &nbsp;&nbsp;&nbsp;TBD - Write-up complete

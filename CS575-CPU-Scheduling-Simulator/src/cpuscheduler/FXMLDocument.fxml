@@ -24,11 +24,12 @@
                      </tooltip>
                   </Label>
                   <TextArea fx:id="input" prefHeight="258.0" prefWidth="336.0" />
-                  <Label fx:id="status" prefWidth="226.0" text="Load From File or Write &quot;Random #processes&quot;">
+                  <Label fx:id="status" prefWidth="226.0" text="Format: Burst Time, Delay Time, Priority, (Level)">
                      <font>
                         <Font size="10.0" />
                      </font>
                   </Label>
+                  <TextArea fx:id="levels" prefHeight="120.0" prefWidth="336.0" />
                </children>
                <HBox.margin>
                   <Insets left="10.0" />
@@ -40,6 +41,7 @@
             <VBox alignment="TOP_CENTER" prefHeight="453.0" prefWidth="130.0" spacing="5.0">
                <children>
                   <ChoiceBox fx:id="schMethod" onAction="#choiceBoxAction" prefHeight="27.0" prefWidth="129.0" />
+                  <ChoiceBox fx:id="levelMethod" onAction="#choiceBoxAction" prefWidth="150.0" />
                   <VBox prefHeight="37.0" prefWidth="130.0">
                      <children>
                         <Label text="Simulation Speed: " />
@@ -48,9 +50,9 @@
                   </VBox>
                   <VBox prefHeight="38.0" prefWidth="130.0" spacing="2.0">
                      <children>
-                        <Label text="Context Switch Duration: ">
+                        <Label text="CS: ">
                            <tooltip>
-                              <Tooltip text="Context Switch Duration (min is 0.4)" />
+                              <Tooltip text="Contex Switch Duration (min is 0.4)" />
                            </tooltip>
                         </Label>
                         <TextField fx:id="cs" text="0.4" />
@@ -68,9 +70,11 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                      <children>
-                        <Button fx:id="run" mnemonicParsing="false" onAction="#handleRunButtonAction" text="Run" />
-                        <Button fx:id="randomInput" mnemonicParsing="false" onAction="#handleRandomInputButtonAction" text="Random Input" />
-                        <Button fx:id="reloadFile" mnemonicParsing="false" onAction="#handleReloadFileButtonAction" text="Load File" />
+                        <Button fx:id="run" prefWidth="100.0" mnemonicParsing="false" onAction="#handleRunButtonAction" text="Run" />
+                        <Button fx:id="randomInput" prefWidth="100.0" mnemonicParsing="false" onAction="#handleRandomInputButtonAction" text="Random Input" />
+                        <Button fx:id="reloadFile" prefWidth="100.0" mnemonicParsing="false" onAction="#handleReloadFileButtonAction" text="Load File" />
+                        <Button fx:id="addLevel" prefWidth="100.0" mnemonicParsing="false" onAction="#handleAddLevelButtonAction" text="Add Level" />
+                        <Button fx:id="removeLevel" prefWidth="100.0" mnemonicParsing="false" onAction="#handleRemoveLevelButtonAction" text="Remove Level" />
                      </children>
                      <VBox.margin>
                         <Insets bottom="10.0" />

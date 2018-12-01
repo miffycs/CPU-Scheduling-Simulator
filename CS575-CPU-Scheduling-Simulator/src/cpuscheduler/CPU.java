@@ -1,18 +1,18 @@
+/*
+ * @author: Miffy Chen & James Yu
+ * @date:   2018/11/15
+ * 
+ * CPU.java
+ * 
+ */
 
 package cpuscheduler;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Random;
 
-
-/*
- * @author: Miffy Chen
- * @date:   2018/11/15
- * 
- * CPU.java
- * 
- */
 
 /**
  * CPU to run the processes
@@ -33,26 +33,34 @@ public class CPU {
 	
 	// Generate random data for processes
 	private static ArrayList<String> randomData = new ArrayList<>();
+	private static ArrayList<String> levels = new ArrayList<>();
 	
 	private Process preProc = null;
 	// Active process that is currently being processed
 	private Process activeProc = null;
 	
-	private double AWT = 0.0;			// Average Wait Time
-	private double ATT = 0.0;			// Average Turnaround Time
-	private double Util = 0.0;			// Utility
-	private double Potency = 0.0;		// Potency
+	private double AvgWaitTime = 0.0;
+	private double AverageTurnAroundTime = 0.0;
+	private double Utility = 0.0;
+	private double Potency = 0.0;
 	
 	private String simData = "";		// store data about current Process as it's being run
 	private String report = "";			// final report
 	
-	// Takes user data of the Processes and
-	// initialize them in a Priority Queue according to the scheduling method selected
-	// 1) process data into readable format
-	// 2) create new Processes from the data
-	// 3) add Processes to allProcs
-	// 4) initialize a Priority Queue from allProcs
+	/*
+	 * Constructor for single level
+	 * 
+	 * Takes user data of the Processes and initialize them in a Priority Queue,
+	 * according to the scheduling method selected.
+	 * 
+	 * 1) process data into readable format
+	 * 2) create new Processes from the data
+	 * 3) add Processes to allProcs
+	 * 4) initialize a Priority Queue from allProcs
+	 */
 	public CPU(String data, String schName) {
+		
+		levels.clear();
 		
 		// select the scheduling method to be used
 		this.sm = setSchMethod(schName);
@@ -63,10 +71,10 @@ public class CPU {
 		
 		// create new process to be added, set to null
 		Process proc = null;
-		int i = 1;				// PID
-		double b = 0;			// burstTime
-		double d = 0;			// delayTime
-		int p = 0;				// priority
+		int pid = 1;
+		double burstTime = 0;
+		double delayTime = 0;
+		int priority = 0;
 		
 		// convert input data passed in into an array
 		String[] lines = data.split("\n");
@@ -76,39 +84,99 @@ public class CPU {
 			String[] split = line.split("\\s+");
 			
 			// match input to data type
-			b = Double.parseDouble(split[0]);
-			d = Double.parseDouble(split[1]);
-			p = (int) Double.parseDouble(split[2]);
+			burstTime = Double.parseDouble(split[0]);
+			delayTime = Double.parseDouble(split[1]);
+			priority = (int) Double.parseDouble(split[2]);
 			
-			// set Process to (int PID, double burstTime, double delayTime, int priority)
-			proc = new Process(i, b, d, p);
+			// update proc properties
+			proc = new Process(pid, burstTime, delayTime, priority);
+			
+			// set level of process
+			proc.setLevel((int) Double.parseDouble(split[3]));
 			
 			// increment PID (& for loop counter)
-			i++;
+			pid++;
 			
 			// add proc to the arraylist of all processes
-			allProcs.add(proc);
+			this.allProcs.add(proc);
 		}
 		
 		// initialize ProcQueue
-		initProcQueue(allProcs);
+		initProcQueue(this.allProcs);
 	}
 	
-	public static void randProc(int processNum) {
+	/*
+	 * Constructor for multi-level
+	 */
+	public CPU(String data, ArrayList<String> schName, String isPreemptive) {
+		levels.addAll(schName);
+		
+		
+		// select the scheduling method to be used
+		this.sm = setSchMethod(isPreemptive + "Multi Level");
+		this.sm.setScheduler(sm);
+		
+		// no Process is currently active
+		this.activeProc = null;
+		
+		// create new process to be added, set to null
+		Process proc = null;
+		int pid = 1;
+		double burstTime = 0;
+		double delayTime = 0;
+		int priority = 0;
+		
+		// convert input data passed in into an array
+		String[] lines = data.split("\n");
+		
+		for (String line: lines) {
+			// split by space
+			String[] split = line.split("\\s+");
+			
+			// match input to data type
+			burstTime = Double.parseDouble(split[0]);
+			delayTime = Double.parseDouble(split[1]);
+			priority = (int) Double.parseDouble(split[2]);
+			
+			// update proc properties
+			proc = new Process(pid, burstTime, delayTime, priority);
+			
+			// set level of process
+			proc.setLevel((int) Double.parseDouble(split[3]));
+			
+			// increment PID (& for loop counter)
+			pid++;
+			
+			// add proc to the arraylist of all processes
+			this.allProcs.add(proc);
+		}
+		
+		// initialize ProcQueue
+		initProcQueue(this.allProcs);
+	}
+	
+	// Generate the data for a number of random processes
+	public static void randProc(int processNum, boolean isMulti, int levelNum) {
+//	public static void randProc(int processNum) {
 		Process proc;
 		randomData.clear();
 		for (int i = 0; i < processNum; i++) {
 			// PID, meanBurst, stdDevBurst, meanDelay, stdDevDelay
 			proc = new Process(i + 1, 8.33, 2.1, 2.46, 0.7);
 			
+			// generate random level
+			proc.setLevel(new Random().nextInt(levelNum)+1);
+			
 			// add random data as a String, in the format of:
 			// burstTime delayTime priority
-			randomData.add(
-			        proc.getBurstTime() + " " + proc.getDelayTime() + " " + proc.getPriority());
+			randomData.add(proc.getBurstTime() + " "
+					+ proc.getDelayTime() + " "
+					+ proc.getPriority() + " "
+					+ proc.getLevel());
 		}
 	}
 	
-	// initialize procQueue, the queue that will contain data after calculation
+	// Initialize procQueue, the queue that will contain data after calculation
 	private void initProcQueue(ArrayList<Process> allProcess) {
 		// new null Process
 		Process proc;
@@ -124,125 +192,127 @@ public class CPU {
 			proc.setArrivalTime(arrivalTime);
 			
 			// add proc to the processQueue
-			procQueue.add(proc);
+			this.procQueue.add(proc);
 		}
 	}
 	
-	// processes with arrival time and currenttime being the same
+	// Processes with arrival time and currenttime being the same
 	private void initReadyQueue() {
 		// new null Process
 		Process proc;
 		// iterate through procQueue
-		for (int i = 0; i < procQueue.size(); i++) {
+		for (int i = 0; i < this.procQueue.size(); i++) {
 			// temp store ith element in procQueue
-			proc = (Process) procQueue.get(i);
+			proc = (Process) this.procQueue.get(i);
 			
 			// (arrivalTime - currentTime = 0)
-			if (proc.getArrivalTime() - currentTime < 0.1) {
+			if (proc.getArrivalTime() - this.currentTime < 0.1) {
 				// add proc to the readyQueue
-				readyQueue.add(proc);
+				this.readyQueue.add(proc);
 				
 				// finally add proc to the PriorityQueue that will be executed
-				sm.addProc(proc);
+				this.sm.addProc(proc);
 			}
 		}
 		
 	}
 	
-	// refresh readyQueue after process is done
+	// Refresh readyQueue after process is done
 	private void refReadyQueue() {
 		// new null Process
 		Process proc;
 		// iterate through readyQueue
-		for (int i = 0; i < readyQueue.size(); i++) {
+		for (int i = 0; i < this.readyQueue.size(); i++) {
 			// temp store ith element in readyQueue
-			proc = (Process) readyQueue.get(i);
+			proc = (Process) this.readyQueue.get(i);
 			
 			// remove process from readyQueue if process is finished
-			if (proc.isIsFinished() == true) {
-				readyQueue.remove(i);
+			if (proc.isFinished() == true) {
+				this.readyQueue.remove(i);
 				// also remove from PriorityQueue that will be executed
-				sm.removeProc(proc);
+				this.sm.removeProc(proc);
 			}
 		}
 	}
 	
-	// refresh procQueue after process is done
+	// Refresh procQueue after process is done
 	private void refProcQueue() {
 		// new null Process
 		Process proc;
 		// iterate through procQueue
-		for (int i = 0; i < procQueue.size(); i++) {
+		for (int i = 0; i < this.procQueue.size(); i++) {
 			// temp store ith element in procQueue
-			proc = (Process) procQueue.get(i);
+			proc = (Process) this.procQueue.get(i);
 			// remove process from procQueue if process is finished
-			if (proc.isIsFinished() == true) {
-				procQueue.remove(i);
+			if (proc.isFinished() == true) {
+				this.procQueue.remove(i);
 				// also remove from PriorityQueue that will be executed
-				sm.removeProc(proc);
+				this.sm.removeProc(proc);
 			}
 		}
 	}
 	
+	// Schedule
 	public void Schedule() {
 		Process proc = null;
-		activeProc = sm.getNextProc(currentTime);
-		if (activeProc != preProc && preProc != null) {
-			if (cs > 0.4) {
-				currentTime += (cs - 0.4);
+		this.activeProc = this.sm.getNextProc(this.currentTime);
+		if (this.activeProc != this.preProc && this.preProc != null) {
+			if (this.cs > 0.4) {
+				this.currentTime += (this.cs - 0.4);
 			}
-			csCount++;
+			this.csCount++;
 		}
-		if (activeProc != null) {
-			activeProc.executing(currentTime);
-			simData += activeProc.toString();
-			preProc = activeProc;
+		if (this.activeProc != null) {
+			this.activeProc.executing(this.currentTime);
+			this.simData += this.activeProc.toString();
+			this.preProc = this.activeProc;
 		}
-		for (int i = 0; i < readyQueue.size(); ++i) {
-			proc = (Process) readyQueue.get(i);
-			if (proc.getPID() != activeProc.getPID()) {
-				proc.waiting(currentTime);
+		for (int i = 0; i < this.readyQueue.size(); ++i) {
+			proc = (Process) this.readyQueue.get(i);
+			if (proc.getPID() != this.activeProc.getPID()) {
+				proc.waiting(this.currentTime);
 			}
 		}
 	}
 	
-	// create report
+	// Generate text report and save to (String)report
 	private void report() {
 		// new null Process
 		Process proc = null;
 		// process count
 		int procCount = 0;
 		
-		for (int i = 0; i < allProcs.size(); i++) {
-			proc = (Process) allProcs.get(i);
+		for (int i = 0; i < this.allProcs.size(); i++) {
+			proc = (Process) this.allProcs.get(i);
 			
-			if (proc.isIsFinished()) {
+			if (proc.isFinished()) {
 				procCount++;
 				double waited = proc.getWaitTime();
 				double turned = proc.getTurnAroundTime();
-				AWT += waited;
-				ATT += turned;
+				this.AvgWaitTime += waited;
+				this.AverageTurnAroundTime += turned;
 			}
 		}
 		
 		if (procCount > 0) {
-			AWT /= (double) procCount;
-			ATT /= (double) procCount;
+			this.AvgWaitTime /= (double) procCount;
+			this.AverageTurnAroundTime /= (double) procCount;
 		}
 		else {
-			AWT = 0.0;
-			ATT = 0.0;
+			this.AvgWaitTime = 0.0;
+			this.AverageTurnAroundTime = 0.0;
 		}
 		
-		Util = ((currentTime - (cs * csCount)) / currentTime) * 100;
-		Potency = currentTime / procCount;
+		this.Utility = ((this.currentTime - (this.cs * this.csCount)) / this.currentTime) * 100;
+		this.Potency = this.currentTime / procCount;
 		
-		report = "AWT : " + String.format("%.1f", AWT) + "\nATT : " + String.format("%.1f", ATT)
-		        + "\nUtil : " + String.format("%.1f", Util) + "%\nPotency : "
-		        + String.format("%.1f", Potency);
+		this.report = "Average Wait Time: " + String.format("%.1f", this.AvgWaitTime)
+				+ "\nAverage Turn Around Time: " + String.format("%.1f", this.AverageTurnAroundTime)
+		        + "\nUtility: " + String.format("%.1f", this.Utility) + "%"
+		        + "\nPotency: " + String.format("%.1f", this.Potency);
 	}
 	
-	// set scheduling method from a String
+	// Set scheduling method from a String
 	public static Scheduler setSchMethod(String method) {
 		
 		String split[] = method.split(":");
@@ -250,10 +320,12 @@ public class CPU {
 		switch (split[0]) {
 			case "FCFS":
 				return new Scheduler_FCFS();
-			case "PSJF":
+			// ***** spell out PSJF
+			case "PSJF": // Pre-emptive SJF
 				return new Scheduler_SJF(true);
 			case "SJF":
 				return new Scheduler_SJF(false);
+			// ***** switch order?
 			case "Preemptive Priority":
 				return new Scheduler_Priority(true);
 			case "Priority":
@@ -262,35 +334,40 @@ public class CPU {
 				return new Scheduler_RR(Double.valueOf(split[1]));
 			case "Lottery":
 				return new Scheduler_Lottery();
+			case "Multi Level":
+				return new Scheduler_Multilevel(levels, false);
+			case "Preemptive Multi Level":
+				return new Scheduler_Multilevel(levels, true);
 		}
 		return null;
 	}
 	
+	// Simulation
 	public void Simulate() {
 		
 		boolean check;
 		check = true;
 		
-		// text format
-		DecimalFormat df = new DecimalFormat("#.##");
+		// show decimals to the tenth digit, and round down
+		DecimalFormat df = new DecimalFormat("#.00");
 		df.setRoundingMode(RoundingMode.FLOOR);
 		
 		while (check) {
 			// if empty then done
-			if (procQueue.isEmpty()) {
+			if (this.procQueue.isEmpty()) {
 				check = false;
 			}
 			// if not empty
 			else {
 				initReadyQueue();
 				check = true;
-				if (!readyQueue.isEmpty()) {
+				if (!this.readyQueue.isEmpty()) {
 					Schedule();
 					refProcQueue();
 					refReadyQueue();
 				}
-				currentTime += 0.1;
-				currentTime = Double.valueOf(df.format(currentTime));
+				this.currentTime += 0.1;
+				this.currentTime = Double.valueOf(df.format(this.currentTime));
 			}
 		}
 		report();
@@ -304,19 +381,19 @@ public class CPU {
 		this.sm = null;
 		this.currentTime = 0;
 		this.csCount = 0;
-		this.AWT = 0.0;
-		this.ATT = 0.0;
-		this.Util = 0.0;
+		this.AvgWaitTime = 0.0;
+		this.AverageTurnAroundTime = 0.0;
+		this.Utility = 0.0;
 		this.Potency = 0.0;
 		
-		for (int i = 0; i < allProcs.size(); i++) {
-			proc = (Process) allProcs.get(i);
+		for (int i = 0; i < this.allProcs.size(); i++) {
+			proc = (Process) this.allProcs.get(i);
 			proc.resetAll();
 		}
 		
-		procQueue.clear();
-		readyQueue.clear();
-		initProcQueue(allProcs);
+		this.procQueue.clear();
+		this.readyQueue.clear();
+		initProcQueue(this.allProcs);
 	}
 	
 	public Process getActiveProc() {
@@ -328,7 +405,6 @@ public class CPU {
 	}
 	
 	public String getSimData() {
-		System.err.println("run");
 		return this.simData;
 	}
 	
@@ -351,7 +427,7 @@ public class CPU {
 	}
 	
 	public ArrayList<Process> getAllProcs() {
-		return allProcs;
+		return this.allProcs;
 	}
 	
 	public static ArrayList<String> getRandomData() {

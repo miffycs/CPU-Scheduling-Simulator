@@ -1,5 +1,5 @@
 /*
- * @author: Miffy Chen
+ * @author: Miffy Chen & James Yu
  * @date:   2018/11/18
  * 
  * Scheduler_RR.java
@@ -26,9 +26,7 @@ public class Scheduler_RR extends Scheduler {
 	private PriorityQueue<Process> pq;
 	private ArrayList<Process> rrList;
 	
-	/**
-	 * Constructor
-	 */
+	// Constructor
 	public Scheduler_RR(double q) {
 		// initializing pq to be a new PriorityQueue
 		// use Comparator to compare processes by their arrival time
@@ -89,12 +87,12 @@ public class Scheduler_RR extends Scheduler {
 				activeProc = rrList.get(currProc);
 				curTimeQuantum = 0;
 			}
-			else if ((quantum - curTimeQuantum < 0.1) && !activeProc.isIsFinished()) {
+			else if ((quantum - curTimeQuantum < 0.1) && !activeProc.isFinished()) {
 				currProc = (currProc + 1) % rrList.size();
 				activeProc = rrList.get(currProc);
 				curTimeQuantum = 0;
 			}
-			else if (activeProc.isIsFinished()) {
+			else if (activeProc.isFinished()) {
 				if (currProc == rrList.size()) {
 					currProc--;
 				}

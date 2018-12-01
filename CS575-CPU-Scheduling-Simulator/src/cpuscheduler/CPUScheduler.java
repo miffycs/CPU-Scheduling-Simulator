@@ -1,21 +1,19 @@
+/*
+ * @author: Miffy Chen & James Yu
+ * @date:   2018/11/15
+ * 
+ * CPUScheduler.java
+ * 
+ */
 
 package cpuscheduler;
 
-import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-
-/*
- * @author: Miffy Chen
- * @date:   2018/11/15
- * 
- * CPUScheduler.java
- * 
- */
 
 /**
  * Driver class

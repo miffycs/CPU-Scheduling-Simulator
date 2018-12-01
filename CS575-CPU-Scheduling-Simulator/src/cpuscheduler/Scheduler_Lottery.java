@@ -1,5 +1,5 @@
 /*
- * @author: Miffy Chen
+ * @author: Miffy Chen & James Yu
  * @date:   2018/11/19
  * 
  * Scheduler_Lottery.java
@@ -21,6 +21,7 @@ public class Scheduler_Lottery extends Scheduler {
 	private ArrayList<Process> procList;
 	private Random gen;
 	
+	// Constructor
 	public Scheduler_Lottery() {
 		procList = new ArrayList<>();
 		gen = new Random(System.nanoTime());

@@ -1,13 +1,13 @@
-
-package cpuscheduler;
-
 /*
- * @author: Miffy Chen
+ * @author: Miffy Chen & James Yu
  * @date:   2018/11/15
  * 
  * Scheduler.java
  * 
  */
+
+package cpuscheduler;
+
 
 /**
  * Abstract class for all scheduling methods
@@ -38,7 +38,7 @@ public abstract class Scheduler {
 	// CPU is finished running all the processes in the PriorityQueue
 	public boolean isJobFinished() {
 		if (activeProc != null)
-			return activeProc.isIsFinished();
+			return activeProc.isFinished();
 		return true;
 	}
 }

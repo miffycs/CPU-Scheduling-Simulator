@@ -1,5 +1,5 @@
 /*
- * @author: Miffy Chen
+ * @author: Miffy Chen & James Yu
  * @date:   2018/11/15
  * 
  * Scheduler_SJF.java
@@ -21,9 +21,7 @@ public class Scheduler_SJF extends Scheduler {
 	private boolean preemptive;
 	private PriorityQueue<Process> pq;
 	
-	/**
-	 * Constructor
-	 */
+	// Constructor
 	public Scheduler_SJF(boolean isPreemptive) {
 		preemptive = isPreemptive;
 		pq = new PriorityQueue<>(new Comparator<Process>() {
@@ -56,8 +54,8 @@ public class Scheduler_SJF extends Scheduler {
 	
 	@Override
 	public Process getNextProc(double currentTime) {
-		if ((isPreemptive() && pq.peek().isIsArrived()) || activeProc == null
-		        || activeProc.isIsFinished()) {
+		if ((isPreemptive() && pq.peek().isArrived()) || activeProc == null
+		        || activeProc.isFinished()) {
 			activeProc = pq.peek();
 		}
 		return activeProc;

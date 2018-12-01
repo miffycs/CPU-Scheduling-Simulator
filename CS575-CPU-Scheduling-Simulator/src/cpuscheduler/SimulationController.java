@@ -1,5 +1,5 @@
 /*
- * @author: Miffy Chen
+ * @author: Miffy Chen & James Yu
  * @date:   2018/11/20
  * 
  * SimulationController.java
@@ -36,13 +36,14 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
 /**
- * 
+ * Simulation Controller
  */
 public class SimulationController implements Initializable {
 	
@@ -56,22 +57,25 @@ public class SimulationController implements Initializable {
 	private VBox subroot1;
 	private AnimationTimer at;
 	private ArrayList<Scheduler> lvls = new ArrayList<>();
-	private Map<Integer, Integer> procBarsTable = new HashMap<>();
-	private ArrayList<ProgressBar> procBars = new ArrayList<>();
+	private Map<Integer, Integer> processBarsTable = new HashMap<>();
+	private ArrayList<ProgressBar> processBars = new ArrayList<>();
 	private ArrayList<Label> labels = new ArrayList<>();
 	
+	// Back button
 	@FXML
 	private void handleBackButtonAction(ActionEvent event) {
 		
+		// clear everything on simulation page
 		at.stop();
-		procBars.clear();
-		procBarsTable.clear();
+		processBars.clear();
+		processBarsTable.clear();
 		labels.clear();
 		lvls.clear();
 		FXMLDocumentController.getCpu().resetSimData();
 		FXMLDocumentController.getCpu().resetReport();
 		FXMLDocumentController.getCpu().resetAll();
 		
+		// reload main page
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
 			Scene scene = new Scene(root);
@@ -87,11 +91,14 @@ public class SimulationController implements Initializable {
 	
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
+		
 		VBox root = new VBox();
 		root.setSpacing(5);
 		root.setAlignment(Pos.CENTER);
 		scroll.setContent(root);
+		
 		Scanner scanner = new Scanner(FXMLDocumentController.getCpu().getSimData());
+		
 		DecimalFormat df = new DecimalFormat("#.#");
 		df.setRoundingMode(RoundingMode.FLOOR);
 		
@@ -105,60 +112,50 @@ public class SimulationController implements Initializable {
 					if (scanner.hasNextLine()) {
 						String line = scanner.nextLine();
 						String[] splt = line.split("\\s+");
-						if (procBarsTable.containsKey(Integer.valueOf(splt[0]))) {
+						if (processBarsTable.containsKey(Integer.valueOf(splt[0]))) {
 							strtmp = "";
-							strtmp += splt[0] + ": ";
-							strtmp += "WaitTime:" + String.format("%.1f", Double.valueOf(splt[7]))
-							        + " ";
-							strtmp += "TrnATime:" + String.format("%.1f", Double.valueOf(splt[8]))
-							        + " - ";
-							strtmp += "Priority:" + splt[3] + " ";
-							strtmp += "ArivTime:" + String.format("%.1f", Double.valueOf(splt[4]))
-							        + " ";
-							strtmp += "StrtTime:" + String.format("%.1f", Double.valueOf(splt[5]))
-							        + " ";
-							strtmp += "FishTime:" + String.format("%.1f", Double.valueOf(splt[6]));
-							procBars.get(procBarsTable.get(Integer.valueOf(splt[0])))
+                            strtmp += "" + splt[0] + ": ";
+                            strtmp += "Wait Time: " + String.format("%.1f", Double.valueOf(splt[7])) + " ";
+                            strtmp += "Turn Around Time: " + String.format("%.1f", Double.valueOf(splt[8])) + " - ";
+                            strtmp += "Priority: " + splt[3] + " ";
+                            strtmp += "Arrival Time: " + String.format("%.1f", Double.valueOf(splt[4])) + " ";
+                            strtmp += "Start Time: " + String.format("%.1f", Double.valueOf(splt[5])) + " ";
+                            strtmp += "Finish Time: " + String.format("%.1f", Double.valueOf(splt[6]));
+							
+							processBars.get(processBarsTable.get(Integer.valueOf(splt[0])))
 							        .setProgress((Double.valueOf(df.format(Double.valueOf(splt[2])))
 							                - (Double.valueOf(df.format(Double.valueOf(splt[1])))))
 							                / Double.valueOf(df.format(Double.valueOf(splt[2]))));
-							labels.get(procBarsTable.get(Integer.valueOf(splt[0]))).setText(strtmp);
+							labels.get(processBarsTable.get(Integer.valueOf(splt[0]))).setText(strtmp);
 							strtmp = "";
 						}
 						else {
 							subroot1 = new VBox();
-							tmp = new ProgressBar(
-							        (Double.valueOf(splt[2]) - Double.valueOf(splt[1]))
-							                / Double.valueOf(splt[2]));
+							tmp = new ProgressBar((Double.valueOf(splt[2]) - Double.valueOf(splt[1])) / Double.valueOf(splt[2]));
 							tmp.setPrefWidth(200);
-							procBars.add(tmp);
-							procBarsTable.put(Integer.valueOf(splt[0]), procBars.size() - 1);
-							subroot1.getChildren().add(procBars.get(procBars.size() - 1));
+							processBars.add(tmp);
+							processBarsTable.put(Integer.valueOf(splt[0]), processBars.size() - 1);
+							subroot1.getChildren().add(processBars.get(processBars.size() - 1));
 							strtmp = "";
-							strtmp += " " + splt[0] + ": ";
-							strtmp += "WaitTime:" + String.format("%.1f", Double.valueOf(splt[7]))
-							        + " ";
-							strtmp += "TrnATime:" + String.format("%.1f", Double.valueOf(splt[8]))
-							        + " - ";
-							strtmp += "Priority:" + splt[3] + " ";
-							strtmp += "ArivTime:" + String.format("%.1f", Double.valueOf(splt[4]))
-							        + " ";
-							strtmp += "StrtTime:" + String.format("%.1f", Double.valueOf(splt[5]))
-							        + " ";
-							strtmp += "FishTime:" + String.format("%.1f", Double.valueOf(splt[6]));
+                            strtmp += " " + splt[0] + ": ";
+                            strtmp += "Wait Time: " + String.format("%.1f", Double.valueOf(splt[7])) + " ";
+                            strtmp += "Turn Around Time: " + String.format("%.1f", Double.valueOf(splt[8])) + " - ";
+                            strtmp += "Priority: " + splt[3] + " ";
+                            strtmp += "Arrival Time: " + String.format("%.1f", Double.valueOf(splt[4])) + " ";
+                            strtmp += "Start Time: " + String.format("%.1f", Double.valueOf(splt[5])) + " ";
+                            strtmp += "Finish Time: " + String.format("%.1f", Double.valueOf(splt[6]));
 							labels.add(new Label(strtmp));
-							subroot1.getChildren().add(labels.get(procBars.size() - 1));
+							subroot1.getChildren().add(labels.get(processBars.size() - 1));
 							strtmp = "";
 							subroot1.setBorder(new Border(new BorderStroke(Color.BLACK,
-							        BorderStrokeStyle.SOLID, null, new BorderWidths(1))));
+									BorderStrokeStyle.SOLID, null, new BorderWidths(1))));
 							subroot1.setAlignment(Pos.CENTER);
 							root.getChildren().add(subroot1);
 						}
 					}
 					else {
 						subroot1 = new VBox();
-						subroot1.getChildren().add(new Label(
-						        "Report:\n" + FXMLDocumentController.getCpu().getReport()));
+						subroot1.getChildren().add(new Label("\nResults:\n" + FXMLDocumentController.getCpu().getReport()));
 						root.getChildren().add(subroot1);
 						scanner.close();
 						at.stop();

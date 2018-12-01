@@ -1,5 +1,5 @@
 /*
- * @author: Miffy Chen
+ * @author: Miffy Chen & James Yu
  * @date:   2018/11/15
  * 
  * Scheduler_FCFS.java
@@ -21,9 +21,7 @@ public class Scheduler_FCFS extends Scheduler {
 	// Priority Queue of Processes
 	private PriorityQueue<Process> pq;
 	
-	/**
-	 * Constructor
-	 */
+	// Constructor
 	public Scheduler_FCFS() {
 		
 		// initializing pq to be a new PriorityQueue

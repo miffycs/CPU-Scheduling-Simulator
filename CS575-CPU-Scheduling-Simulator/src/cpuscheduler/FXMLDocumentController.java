@@ -43,24 +43,44 @@ public class FXMLDocumentController implements Initializable {
 	
 	@FXML
 	private Label status;
+	
 	@FXML
 	private Button run;
+	
 	@FXML
 	private Button randomInput;
+	
 	@FXML
 	private Button reloadFile;
+	
+	@FXML
+    private Button addLevel;
+    
+    @FXML
+    private Button removeLevel;
+	
 	@FXML
 	private TextArea input;
+	
+	@FXML
+    private TextArea levels;
+	
 	@FXML
 	private ChoiceBox schMethod;
+	
+	@FXML
+    private ChoiceBox levelMethod;
+	
 	@FXML
 	private TextField simSpeed;
+	
 	@FXML
 	private TextField cs;
+	
 	@FXML
 	private TextField quantum;
 	
-//	private static ArrayList<String> schLevels = new ArrayList<>();
+	private static ArrayList<String> schLevels = new ArrayList<>();
 	private static String prevInput = "";
 	private static CPU cpu;
 	private static double speed;
@@ -75,30 +95,33 @@ public class FXMLDocumentController implements Initializable {
 			status.setTextFill(Color.DARKGREEN);
 			// get String of scheduling method
 			String method = schMethod.getValue().toString();
-			// if method = RR, set quantum first
-			if (schMethod.getValue().equals("Round Robin"))
+			// if method = RR, Quantum becomes customizable
+			if (schMethod.getValue().equals("Round Robin")) {
 				method += ":" + quantum.getText();
-			// if generating random input
-			if (input.getText().startsWith("Random")) {
-				status.setText("Error: Randomize First (press Random Input button)");
-				status.setTextFill(Color.RED);
+			}
+			
+			if (levelMethod.getValue().equals("Single Level")) {
+				cpu = new CPU(input.getText(), method);
+			}
+			else if (levelMethod.getValue().equals("Preemptive Multi Level")) {
+				cpu = new CPU(input.getText(), schLevels, "Preemptive ");
 			}
 			else {
-				cpu = new CPU(input.getText(), method);
-				prevInput = input.getText();
-				cpu.Simulate();
-				speed = Double.parseDouble(simSpeed.getText());
-				try {
-					Parent root = FXMLLoader.load(getClass().getResource("Simulation.fxml"));
-					Scene scene = new Scene(root);
-					Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-					stage.setScene(scene);
-					stage.show();
-				}
-				catch (IOException ex) {
-					Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null,
-					        ex);
-				}
+				cpu = new CPU(input.getText(), schLevels, "");
+			}
+			
+			prevInput = input.getText();
+			cpu.Simulate();
+			speed = Double.parseDouble(simSpeed.getText());
+			try {
+				Parent root = FXMLLoader.load(getClass().getResource("Simulation.fxml"));
+				Scene scene = new Scene(root);
+				Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+				stage.setScene(scene);
+				stage.show();
+			}
+			catch (IOException ex) {
+				Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
 		else {
@@ -108,7 +131,7 @@ public class FXMLDocumentController implements Initializable {
 		
 	}
 	
-	// generate random process data (set of 5)
+	// Generate data for a set of random processes (default = set of 5)
 	@FXML
 	private void handleRandomInputButtonAction(ActionEvent event) {
 		// get String of scheduling method
@@ -116,64 +139,69 @@ public class FXMLDocumentController implements Initializable {
 		// if method = RR, set quantum first
 		if (schMethod.getValue().equals("Round Robin"))
 			method += ":" + quantum.getText();
-		// if generating random input
+		
+		// if input = "Random #", generate # sets of data
 		if (input.getText().startsWith("Random")) {
 			status.setText("OK");
 			status.setTextFill(Color.DARKGREEN);
 			
-			// split random input into readable format
+			// split "Random" from input and only keep # of processes
 			String[] line = input.getText().split("\n");
 			String[] split = line[0].split("\\s+");
-			CPU.randProc(Integer.valueOf(split[1]));
-
-			String res = "";
-			for (String string: cpu.getRandomData()) {
-				res += string + "\n";
+			
+			// generate # processes according to input
+			if (levelMethod.getValue().equals("Single Level")) {
+				CPU.randProc(Integer.valueOf(split[1]), false, 1);
+			} else {
+				CPU.randProc(Integer.valueOf(split[1]), true, schLevels.size());
 			}
-			input.setText(res);
 		}
-		// if input is not random data
+		// if # of sets not given, generate 5 sets
 		else {
-			// 5 sets of random process data 
-			CPU.randProc(Integer.valueOf(5));//, false, 1);
-			String res = "";
-			for (String string: cpu.getRandomData()) {
-				res += string + "\n";
+			if (levelMethod.getValue().equals("Single Level")) {
+				CPU.randProc(Integer.valueOf(5), false, 1);
 			}
-			input.setText(res);
+			else {
+				CPU.randProc(Integer.valueOf(5), true, schLevels.size());
+			}
 		}
 		
+		String res = "";
+		for (String string: cpu.getRandomData()) {
+			res += string + "\n";
+		}
+		input.setText(res);
 	}
 	
-	// load input from a text file
+	// Load input from a text file
 	@FXML
 	private void handleReloadFileButtonAction(ActionEvent event) {
 		
 		// load file from any *.txt
 		FileChooser fileChooser = new FileChooser();
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)",
-		        "*.txt");
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
 		fileChooser.getExtensionFilters().add(extFilter);
 		
 		Stage primaryStage = new Stage();
 		File file = fileChooser.showOpenDialog(primaryStage);
-		if (file != null) {
-			
+		
+		if (file != null) {	
 			String s = "";
 			String res = "";
-			double b = 0;			// burstTime
-			double d = 0;			// delayTime
-			int p = 0;				// priority
+			double burstTime = 0;
+			double delayTime = 0;
+			int priority = 0;
+			
 			try {
 				BufferedReader input = new BufferedReader(new FileReader(file));
 				while ((s = input.readLine()) != null) {
 					// split by space
 					String[] split = s.split("\\s+");
 					// match input to data type
-					b = Double.parseDouble(split[0]);
-					d = Double.parseDouble(split[1]);
-					p = Integer.parseInt(split[2]);
-					res += b + " " + d + " " + p + "\n";
+					burstTime = Double.parseDouble(split[0]);
+					delayTime = Double.parseDouble(split[1]);
+					priority = Integer.parseInt(split[2]);
+					res += burstTime + " " + delayTime + " " + priority + "\n";
 				}
 				this.input.setText(res);
 			}
@@ -185,9 +213,36 @@ public class FXMLDocumentController implements Initializable {
 		
 	}
 	
+	// Add a level
+	@FXML
+	private void handleAddLevelButtonAction(ActionEvent event) {
+		String method = schMethod.getValue().toString();
+		if (schMethod.getValue().equals("Round Robin"))
+			method += ":" + quantum.getText();
+		schLevels.add(method);
+		levels.setText(levels.getText() + "Level " + schLevels.size() + " : " + method + "\n");
+	}
+	
+	// Remove a level
+	@FXML
+	private void handleRemoveLevelButtonAction(ActionEvent event) {
+		if (schLevels.size() > 0) {
+			schLevels.remove(schLevels.size() - 1);
+			String res = "";
+			int i = 1;
+			for (String schLevel: schLevels) {
+				res += "Level " + i + " : " + schLevel + "\n";
+				i++;
+			}
+			levels.setText(res);
+		}
+	}
+	
+	// Disable Quantum textbox if scheduler is not Round Robin
 	@FXML
 	private void choiceBoxAction(ActionEvent event) {
 		
+		// Quantum for Round Robin
 		if (schMethod.getValue().equals("Round Robin")) {
 			quantum.setDisable(false);
 		}
@@ -195,14 +250,32 @@ public class FXMLDocumentController implements Initializable {
 			quantum.setDisable(true);
 		}
 		
-		input.setPrefHeight(650);
-		run.setTranslateY(5);
-		reloadFile.setTranslateY(5);
-		randomInput.setTranslateY(5);
+		try {
+			if (levelMethod.getValue().equals("Multi Level") || levelMethod.getValue().equals("Preemptive Multi Level")) {
+				levels.setVisible(true);
+				input.setPrefHeight(258);
+				removeLevel.setVisible(true);
+				addLevel.setVisible(true);
+				run.setTranslateY(-5);
+				reloadFile.setTranslateY(-5);
+				randomInput.setTranslateY(-5);
+			}
+			else {
+				levels.setVisible(false);
+				input.setPrefHeight(650);
+				removeLevel.setVisible(false);
+				addLevel.setVisible(false);
+				run.setTranslateY(5);
+				reloadFile.setTranslateY(5);
+				randomInput.setTranslateY(5);
+			}
+		}
+		catch (Exception e) {
+			
+		}
 	}
 	
-	
-	// not sure used by what
+	// Validate input is a number, that is not over the max_length
 	@FXML
 	public EventHandler<KeyEvent> numericValidation(final Integer max_Lengh) {
 		return new EventHandler<KeyEvent>() {
@@ -229,7 +302,8 @@ public class FXMLDocumentController implements Initializable {
 		};
 	}
 	
-	// validate input data
+	// Validate data that was inputted, make sure format is correct
+	// Validate data of CS and Quantum
 	@FXML
 	public String validate() {
 		
@@ -238,8 +312,7 @@ public class FXMLDocumentController implements Initializable {
 		
 		if (lines.length == 0) {
 			return "Error: No Input";
-		}
-		else if (lines[0].startsWith("Random")) {
+		} else if (lines[0].startsWith("Random")) {
 			String split[] = lines[0].split("\\s+");
 			try {
 				Integer.valueOf(split[1]);
@@ -247,16 +320,18 @@ public class FXMLDocumentController implements Initializable {
 			catch (Exception e) {
 				return "Error: Bad Input for Random";
 			}
-		}
-		else {
+		} else {
+			int level = 0;
 			try {
 				for (String line: lines) {
-					// split by space
 					String[] split = line.split("\\s+");
-					// match input to data type
 					Double.parseDouble(split[0]);
 					Double.parseDouble(split[1]);
 					Integer.parseInt(split[2]);
+					level = Integer.parseInt(split[3]);
+					if (level - 1 > schLevels.size()) {
+						return "Error: Bad Level Input";
+					}
 				}
 			}
 			catch (Exception e) {
@@ -264,11 +339,12 @@ public class FXMLDocumentController implements Initializable {
 			}
 		}
 		
-		if (Double.parseDouble(quantum.getText()) < 0.2) {
-			return "Error: minimum value for quantum is 0.2";
-		}
 		if (Double.parseDouble(cs.getText()) < 0.4) {
 			return "Error: minimum value for quantum is 0.4";
+		}
+		
+		if (Double.parseDouble(quantum.getText()) < 0.2) {
+			return "Error: minimum value for quantum is 0.2";
 		}
 		
 		return "OK";
@@ -279,23 +355,36 @@ public class FXMLDocumentController implements Initializable {
 		
 		input.setText(prevInput);
 		
+		String res = "";
+		int i = 1;
+		for (String schLevel: schLevels) {
+			res += "Level " + i + " : " + schLevel + "\n";
+			i++;
+		}
+		levels.setText(res);
+		
 		simSpeed.addEventFilter(KeyEvent.KEY_TYPED, numericValidation(2));
 		cs.addEventFilter(KeyEvent.KEY_TYPED, numericValidation(5));
 		quantum.addEventFilter(KeyEvent.KEY_TYPED, numericValidation(5));
 		quantum.setDisable(true);
 		
-		// TODO
 		schMethod.getItems().removeAll(schMethod.getItems());
-		schMethod.getItems().addAll("FCFS", "PSJF", "SJF", "Preemptive Priority", "Priority",
-		        "Round Robin", "Lottery");
+		schMethod.getItems().addAll("FCFS", "PSJF", "SJF", "Preemptive Priority", "Priority", "Round Robin", "Lottery");
 		schMethod.getSelectionModel().select("FCFS");
 		
-		input.setPrefHeight(650);
+		levelMethod.getItems().removeAll(levelMethod.getItems());
+		levelMethod.getItems().addAll("Single Level", "Multi Level", "Preemptive Multi Level");
+		levelMethod.getSelectionModel().select("Single Level");
 		
+		input.setPrefHeight(650);
+		levels.setEditable(false);
+		levels.setVisible(false);
+		
+		removeLevel.setVisible(false);
+		addLevel.setVisible(false);
 		run.setTranslateY(20);
 		reloadFile.setTranslateY(20);
 		randomInput.setTranslateY(20);
-		
 	}
 	
 	public static CPU getCpu() {

@@ -135,6 +135,7 @@ public class Main extends JFrame {
 	private void set_jTabbedPane() {
 		
 		jTabbedPane = new JTabbedPane();
+		jTabbedPane.setFont(new Font("Tahoma", 0, 18)); // NOI18N
 		// switch between Panes: ProcessInfo and Simulator
 		jTabbedPane.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent evt) {
@@ -174,16 +175,19 @@ public class Main extends JFrame {
 		addProcess_label_arrivalTime = new JLabel();
 		addProcess_label_burstTime = new JLabel();
 		addProcess_spinner_arrivalTime = new JSpinner();
+		addProcess_spinner_arrivalTime.setFont(new Font("Tahoma", 0, 16));	// NOI18N
 		addProcess_spinner_burstTime = new JSpinner();
+		addProcess_spinner_burstTime.setFont(new Font("Tahoma", 0, 16));	// NOI18N
 		addProcess_button = new JButton();
 		
-		panel_addProcess.setBorder(BorderFactory.createTitledBorder("Add new"));
+		panel_addProcess.setBorder(BorderFactory.createTitledBorder("Add new process"));
 		
-
-//		addProcess_label_arrivalTime.setFont(new Font("Tahoma", 1, 18)); // NOI18N
-		addProcess_label_arrivalTime.setText("Enter Arrival Time");
-		addProcess_label_burstTime.setText("Enter Burst Time");
+		addProcess_label_arrivalTime.setFont(new Font("Tahoma", 0, 16)); // NOI18N
+		addProcess_label_arrivalTime.setText("Enter Arrival Time:");
+		addProcess_label_burstTime.setFont(new Font("Tahoma", 0, 16)); // NOI18N
+		addProcess_label_burstTime.setText("Enter Burst Time:");
 		
+		addProcess_button.setFont(new Font("Tahoma", 0, 16));	// NOI18N
 		addProcess_button.setText("Add new process");
 		addProcess_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -204,6 +208,7 @@ public class Main extends JFrame {
 		
 		panel_options.setBorder(BorderFactory.createTitledBorder("Options"));
 		
+		option_importFromFile.setFont(new Font("Tahoma", 0, 16));	// NOI18N
 		option_importFromFile.setText("Import Data From File");
 		option_importFromFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -211,6 +216,7 @@ public class Main extends JFrame {
 			}
 		});
 		
+		option_exportToFile.setFont(new Font("Tahoma", 0, 16));	// NOI18N
 		option_exportToFile.setText("Export Data To File");
 		option_exportToFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -218,6 +224,7 @@ public class Main extends JFrame {
 			}
 		});
 		
+		option_removeSelectedProcess.setFont(new Font("Tahoma", 0, 16));	// NOI18N
 		option_removeSelectedProcess.setText("Remove Selected Process");
 		option_removeSelectedProcess.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -225,6 +232,7 @@ public class Main extends JFrame {
 			}
 		});
 		
+		option_removeAllProcesses.setFont(new Font("Tahoma", 0, 16));	// NOI18N
 		option_removeAllProcesses.setText("Remove All Processes");
 		option_removeAllProcesses.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -233,11 +241,12 @@ public class Main extends JFrame {
 		});
 	}
 	
-	// ??????
 	private void set_processInfo_scheduler() {
 		selectScheduler_label = new JLabel();
 		selectScheduler = new JComboBox<>();
+		selectScheduler.setFont(new Font("Tahoma", 0, 16));	// NOI18N
 		
+		selectScheduler_label.setFont(new Font("Tahoma", 0, 16));	// NOI18N
 		selectScheduler_label.setText("Select Algorithm:");
 		
 		selectScheduler.setModel(new DefaultComboBoxModel<>(
@@ -258,7 +267,7 @@ public class Main extends JFrame {
 	private void set_processInfo_run() {
 		button_startSimulateProcesses = new JButton();
 		
-//		button_startSimulateProcesses.setFont(new Font("Tahoma", 1, 18));
+		button_startSimulateProcesses.setFont(new Font("Tahoma", 1, 18));	// NOI18N
 		button_startSimulateProcesses.setIcon(new ImageIcon(Main.class.getResource("/cpuschedulingsimulator/play.png")));
 		button_startSimulateProcesses.setText("Proceed to Simulator");
 		button_startSimulateProcesses.addActionListener(new ActionListener() {
@@ -273,10 +282,13 @@ public class Main extends JFrame {
 		set_simulator_displayPanel();
 		CPU_ProgressBar = new JProgressBar();
 		simulator_label_CPU_clock = new JLabel();
+		simulator_label_CPU_clock.setFont(new Font("Tahoma", 0, 16));	// NOI18N
 		simulator_label_CPU_clock.setText("CPU Clock");
 		simulator_label_CPU_selectedProcess = new JLabel();
+		simulator_label_CPU_selectedProcess.setFont(new Font("Tahoma", 0, 16));	// NOI18N
 		simulator_label_CPU_selectedProcess.setText("CPU Selected Process:");
 		simulator_label_CPU_selectedProcess_selected = new JLabel();
+		simulator_label_CPU_selectedProcess_selected.setFont(new Font("Tahoma", 0, 16));	// NOI18N
 		set_simulator_speed();
 		set_simulator_control();
 		set_simulator_results();
@@ -295,25 +307,25 @@ public class Main extends JFrame {
 		
 		simulatorDisplayPanel.setBorder(BorderFactory.createTitledBorder("Simulator"));
 		
-//		simulatorDisplayPanel_label_process.setFont(new Font("Tahoma", 1, 30));
+		simulatorDisplayPanel_label_process.setFont(new Font("Tahoma", 0, 14));	// NOI18N
 		simulatorDisplayPanel_label_process.setText("Process");
 		
-//		simulatorDisplayPanel_label_progress.setFont(new Font("Tahoma", 1, 13));
+		simulatorDisplayPanel_label_progress.setFont(new Font("Tahoma", 0, 14));	// NOI18N
 		simulatorDisplayPanel_label_progress.setText("Progress");
 		
-//		simulatorDisplayPanel_label_remainingBurstTime.setFont(new Font("Tahoma", 1, 13));
+		simulatorDisplayPanel_label_remainingBurstTime.setFont(new Font("Tahoma", 0, 14));	// NOI18N
 		simulatorDisplayPanel_label_remainingBurstTime.setText("Remaining BT");
 		
-//		simulatorDisplayPanel_label_totalBurstTime.setFont(new Font("Tahoma", 1, 13));
+		simulatorDisplayPanel_label_totalBurstTime.setFont(new Font("Tahoma", 0, 14));	// NOI18N
 		simulatorDisplayPanel_label_totalBurstTime.setText("Total BT");
 		
-//		simulatorDisplayPanel_label_schedule.setFont(new Font("Tahoma", 1, 13));
+		simulatorDisplayPanel_label_schedule.setFont(new Font("Tahoma", 0, 14));	// NOI18N
 		simulatorDisplayPanel_label_schedule.setText("Scheduling:");
 		
-//		simulatorDisplayPanel_label_scheduleSelected.setFont(new Font("Tahoma", 1, 13));
+		simulatorDisplayPanel_label_scheduleSelected.setFont(new Font("Tahoma", 0, 14));	// NOI18N
 		simulatorDisplayPanel_label_scheduleSelected.setText("N/A");
 		
-//		simulatorDisplayPanel_label_timeQuantum.setFont(new Font("Tahoma", 1, 13));
+		simulatorDisplayPanel_label_timeQuantum.setFont(new Font("Tahoma", 0, 14));	// NOI18N
 		simulatorDisplayPanel_label_timeQuantum.setText("Time Quantum");
 		
 		simulatorDisplayPanel_spinner_timeQuantum.setModel(new SpinnerNumberModel(1, 1, null, 1));
@@ -332,8 +344,11 @@ public class Main extends JFrame {
 			public void stateChanged(ChangeEvent evt) {
 				onClick_simulatorSpeedSlider(evt);
 			}
-		});		
+		});
+		
+		simulatorSpeed_label_slow.setFont(new Font("Tahoma", 0, 16));	// NOI18N
 		simulatorSpeed_label_slow.setText("Slow");
+		simulatorSpeed_label_fast.setFont(new Font("Tahoma", 0, 16));	// NOI18N
 		simulatorSpeed_label_fast.setText("Fast");
 	}
 	
@@ -347,6 +362,7 @@ public class Main extends JFrame {
 		
 		simulatorControlPanel.setBorder(BorderFactory.createTitledBorder("Control"));
 		
+		control_simulate.setFont(new Font("Tahoma", 0, 16)); // NOI18N
 		control_simulate.setText("Simulate");
 		control_simulate.setEnabled(false);
 		control_simulate.addActionListener(new ActionListener() {
@@ -355,6 +371,7 @@ public class Main extends JFrame {
 			}
 		});
 		
+		control_pauseResume.setFont(new Font("Tahoma", 0, 16)); // NOI18N
 		control_pauseResume.setText("Pause/Resume");
 		control_pauseResume.setEnabled(false);
 		control_pauseResume.addActionListener(new ActionListener() {
@@ -363,6 +380,7 @@ public class Main extends JFrame {
 			}
 		});
 		
+		control_step.setFont(new Font("Tahoma", 0, 16)); // NOI18N
 		control_step.setText("Step");
 		control_step.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -370,6 +388,7 @@ public class Main extends JFrame {
 			}
 		});
 		
+		control_back.setFont(new Font("Tahoma", 0, 16)); // NOI18N
 		control_back.setText("Go Back");
 		control_back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -377,6 +396,7 @@ public class Main extends JFrame {
 			}
 		});
 		
+		control_reset.setFont(new Font("Tahoma", 0, 16)); // NOI18N
 		control_reset.setText("Reset");
 		control_reset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -395,16 +415,21 @@ public class Main extends JFrame {
 		
 		simulatorResultsPanel.setBorder(BorderFactory.createTitledBorder("Result"));
 		
+		simulatorResults_label_avgWaitingTime.setFont(new Font("Tahoma", 0, 16)); // NOI18N
 		simulatorResults_label_avgWaitingTime.setText("Average Waiting Time");
 		
+		simulatorResults_label_avgTurnAroundTime.setFont(new Font("Tahoma", 0, 16)); // NOI18N
 		simulatorResults_label_avgTurnAroundTime.setText("Average Turn Around Time");
 		
 		simulatorResults_label_avgWaitingTimeCalc.setEditable(false);
+		simulatorResults_label_avgWaitingTimeCalc.setFont(new Font("Tahoma", 0, 16)); // NOI18N
 		simulatorResults_label_avgWaitingTimeCalc.setText("N/A");
 		
 		simulatorResults_label_avgTurnAroundTimeCalc.setEditable(false);
+		simulatorResults_label_avgTurnAroundTimeCalc.setFont(new Font("Tahoma", 0, 16)); // NOI18N
 		simulatorResults_label_avgTurnAroundTimeCalc.setText("N/A");
 		
+		simulatorResults_button_detailedResults.setFont(new Font("Tahoma", 0, 18)); // NOI18N
 		simulatorResults_button_detailedResults.setText("View Detailed Results");
 		simulatorResults_button_detailedResults.setEnabled(false);
 		simulatorResults_button_detailedResults.addActionListener(new ActionListener() {
@@ -418,9 +443,11 @@ public class Main extends JFrame {
 		menuBar = new JMenuBar();
 		
 		menu_file = new JMenu();
+		menu_file.setFont(new Font("Tahoma", 0, 16)); // NOI18N
 		menu_file.setText("File");
 		
 		menu_file_importFromFile = new JMenuItem();
+		menu_file_importFromFile.setFont(new Font("Tahoma", 0, 16)); // NOI18N
 		menu_file_importFromFile.setText("Import from file");
 		menu_file_importFromFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -429,6 +456,7 @@ public class Main extends JFrame {
 		});
 		
 		menu_file_exportToFile = new JMenuItem();
+		menu_file_exportToFile.setFont(new Font("Tahoma", 0, 16)); // NOI18N
 		menu_file_exportToFile.setText("Export to file");
 		menu_file_exportToFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -437,9 +465,11 @@ public class Main extends JFrame {
 		});
 		
 		menu_help = new JMenu();
+		menu_help.setFont(new Font("Tahoma", 0, 16)); // NOI18N
 		menu_help.setText("Help");
 		
 		menu_help_about = new JMenuItem();
+		menu_help_about.setFont(new Font("Tahoma", 0, 16)); // NOI18N
 		menu_help_about.setText("About");
 		menu_help_about.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -463,8 +493,7 @@ public class Main extends JFrame {
 		setSecondTabComponents(false);
 		simulatorDisplayPanel_spinner_timeQuantum.setVisible(false);
 		simulatorDisplayPanel_label_timeQuantum.setVisible(false);
-		this.setSize(780, 600);
-		
+		this.setSize(780, 570);
 	}
 	
 	private void initComponents() {
@@ -472,103 +501,76 @@ public class Main extends JFrame {
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setTitle("CPU Scheduling Simulator");
 		
-		// set labels, buttons, etc
+		// set labels, buttons, tables, etc
 		setAll();
 		
 		// set layout
 		getContentPane().setLayout(new AbsoluteLayout());
 		
-		
-		set_jTabbedPane();
-		
-		set_tab_ProcessInfo();
-		
-		set_processInfo_display();
-		
-		set_processInfo_addProcess();
-		
-		// ***** Set Layout
 		GroupLayout gl_panel_addProcess = new GroupLayout(panel_addProcess);
+		gl_panel_addProcess.setHorizontalGroup(
+			gl_panel_addProcess.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_addProcess.createSequentialGroup()
+					.addGroup(gl_panel_addProcess.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_addProcess.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(gl_panel_addProcess.createParallelGroup(Alignment.LEADING)
+								.addComponent(addProcess_label_arrivalTime)
+								.addComponent(addProcess_label_burstTime))
+							.addGap(18)
+							.addGroup(gl_panel_addProcess.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(addProcess_spinner_arrivalTime, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(addProcess_spinner_burstTime, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(gl_panel_addProcess.createSequentialGroup()
+							.addGap(39)
+							.addComponent(addProcess_button)))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		gl_panel_addProcess.setVerticalGroup(
+			gl_panel_addProcess.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_addProcess.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel_addProcess.createParallelGroup(Alignment.BASELINE)
+						.addComponent(addProcess_label_arrivalTime)
+						.addComponent(addProcess_spinner_arrivalTime, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_panel_addProcess.createParallelGroup(Alignment.BASELINE)
+						.addComponent(addProcess_label_burstTime)
+						.addComponent(addProcess_spinner_burstTime, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(addProcess_button)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
 		panel_addProcess.setLayout(gl_panel_addProcess);
-		gl_panel_addProcess.setHorizontalGroup(gl_panel_addProcess
-		        .createParallelGroup(GroupLayout.Alignment.LEADING)
-		        .addGroup(gl_panel_addProcess.createSequentialGroup().addGroup(gl_panel_addProcess
-		                .createParallelGroup(GroupLayout.Alignment.LEADING)
-		                .addGroup(gl_panel_addProcess.createSequentialGroup().addContainerGap()
-		                        .addGroup(gl_panel_addProcess
-		                                .createParallelGroup(GroupLayout.Alignment.LEADING)
-		                                .addComponent(addProcess_label_arrivalTime)
-		                                .addComponent(addProcess_label_burstTime))
-		                        .addGap(18, 18, 18)
-		                        .addGroup(gl_panel_addProcess
-		                                .createParallelGroup(GroupLayout.Alignment.LEADING, false)
-		                                .addComponent(addProcess_spinner_arrivalTime)
-		                                .addComponent(addProcess_spinner_burstTime)))
-		                .addGroup(gl_panel_addProcess.createSequentialGroup().addGap(53, 53, 53)
-		                        .addComponent(addProcess_button)))
-		                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
-		gl_panel_addProcess.setVerticalGroup(gl_panel_addProcess
-		        .createParallelGroup(GroupLayout.Alignment.LEADING)
-		        .addGroup(gl_panel_addProcess.createSequentialGroup().addContainerGap()
-		                .addGroup(gl_panel_addProcess
-		                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
-		                        .addComponent(addProcess_label_arrivalTime).addComponent(
-		                                addProcess_spinner_arrivalTime, GroupLayout.PREFERRED_SIZE,
-		                                GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-		                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-		                .addGroup(gl_panel_addProcess
-		                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
-		                        .addComponent(addProcess_label_burstTime).addComponent(
-		                                addProcess_spinner_burstTime, GroupLayout.PREFERRED_SIZE,
-		                                GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-		                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED,
-		                        GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-		                .addComponent(addProcess_button).addContainerGap()));
-		// Set Layout Done
-		
-		
-		set_processInfo_options();
-		
-		
-		// *** Set Layout
+
 		GroupLayout gl_panel_options = new GroupLayout(panel_options);
-		panel_options.setLayout(gl_panel_options);
-		gl_panel_options.setHorizontalGroup(gl_panel_options
-		        .createParallelGroup(GroupLayout.Alignment.LEADING)
-		        .addGroup(gl_panel_options.createSequentialGroup().addContainerGap()
-		                .addGroup(gl_panel_options
-		                        .createParallelGroup(GroupLayout.Alignment.LEADING, false)
-		                        .addComponent(option_removeSelectedProcess,
-		                                GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-		                        .addComponent(option_importFromFile, GroupLayout.DEFAULT_SIZE,
-		                                GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 48,
-		                        Short.MAX_VALUE)
-		                .addGroup(gl_panel_options
-		                        .createParallelGroup(GroupLayout.Alignment.LEADING, false)
-		                        .addComponent(option_removeAllProcesses, GroupLayout.DEFAULT_SIZE,
-		                                146, Short.MAX_VALUE)
-		                        .addComponent(option_exportToFile, GroupLayout.DEFAULT_SIZE,
-		                                GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		                .addContainerGap()));
+		gl_panel_options.setHorizontalGroup(
+			gl_panel_options.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_options.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel_options.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(option_exportToFile, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(option_importFromFile, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+					.addGroup(gl_panel_options.createParallelGroup(Alignment.TRAILING)
+						.addComponent(option_removeSelectedProcess, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(option_removeAllProcesses, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGap(5))
+		);
 		gl_panel_options.setVerticalGroup(
-		        gl_panel_options.createParallelGroup(GroupLayout.Alignment.LEADING)
-		                .addGroup(gl_panel_options.createSequentialGroup().addContainerGap()
-		                        .addGroup(gl_panel_options
-		                                .createParallelGroup(GroupLayout.Alignment.BASELINE)
-		                                .addComponent(option_importFromFile)
-		                                .addComponent(option_exportToFile))
-		                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-		                        .addGroup(gl_panel_options
-		                                .createParallelGroup(GroupLayout.Alignment.BASELINE)
-		                                .addComponent(option_removeSelectedProcess)
-		                                .addComponent(option_removeAllProcesses))
-		                        .addContainerGap(30, Short.MAX_VALUE)));
-		
-		set_processInfo_scheduler();
-		set_processInfo_run();
-		
-		
+			gl_panel_options.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panel_options.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel_options.createParallelGroup(Alignment.TRAILING)
+						.addComponent(option_importFromFile)
+						.addComponent(option_removeSelectedProcess))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_panel_options.createParallelGroup(Alignment.BASELINE)
+						.addComponent(option_removeAllProcesses, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(option_exportToFile, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		panel_options.setLayout(gl_panel_options);
 		
 		GroupLayout gl_tab_processInfo = new GroupLayout(tab_processInfo);
 		gl_tab_processInfo.setHorizontalGroup(
@@ -578,19 +580,20 @@ public class Main extends JFrame {
 						.addGroup(gl_tab_processInfo.createSequentialGroup()
 							.addGap(5)
 							.addComponent(panel_addProcess, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGap(12)
 							.addGroup(gl_tab_processInfo.createParallelGroup(Alignment.LEADING)
-								.addComponent(panel_options, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addGroup(gl_tab_processInfo.createSequentialGroup()
-									.addGap(6)
+									.addGap(18)
 									.addComponent(selectScheduler_label)
 									.addGap(18)
-									.addComponent(selectScheduler, GroupLayout.PREFERRED_SIZE, 156, GroupLayout.PREFERRED_SIZE))))
+									.addComponent(selectScheduler, GroupLayout.PREFERRED_SIZE, 156, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_tab_processInfo.createSequentialGroup()
+									.addGap(12)
+									.addComponent(panel_options, GroupLayout.PREFERRED_SIZE, 447, Short.MAX_VALUE))))
 						.addComponent(processDisplayScrollPane, GroupLayout.PREFERRED_SIZE, 725, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_tab_processInfo.createSequentialGroup()
-							.addGap(219)
-							.addComponent(button_startSimulateProcesses, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(45, Short.MAX_VALUE))
+							.addGap(236)
+							.addComponent(button_startSimulateProcesses, GroupLayout.PREFERRED_SIZE, 270, GroupLayout.PREFERRED_SIZE)))
+					.addGap(81))
 		);
 		gl_tab_processInfo.setVerticalGroup(
 			gl_tab_processInfo.createParallelGroup(Alignment.LEADING)
@@ -602,36 +605,29 @@ public class Main extends JFrame {
 						.addComponent(panel_addProcess, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_tab_processInfo.createSequentialGroup()
 							.addComponent(panel_options, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGap(7)
-							.addGroup(gl_tab_processInfo.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_tab_processInfo.createSequentialGroup()
-									.addGap(3)
-									.addComponent(selectScheduler_label))
+							.addGap(4)
+							.addGroup(gl_tab_processInfo.createParallelGroup(Alignment.BASELINE)
+								.addComponent(selectScheduler_label)
 								.addComponent(selectScheduler, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-					.addGap(39)
+					.addGap(40)
 					.addComponent(button_startSimulateProcesses, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
-					.addGap(286))
+					.addGap(283))
 		);
 		tab_processInfo.setLayout(gl_tab_processInfo);
 		
-
 		
-		set_tab_Simulator();
-		set_simulator_displayPanel();
-		
-
 		GroupLayout gl_simulatorDisplayPanel = new GroupLayout(simulatorDisplayPanel);
 		gl_simulatorDisplayPanel.setHorizontalGroup(
 			gl_simulatorDisplayPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_simulatorDisplayPanel.createSequentialGroup()
 					.addGap(31)
 					.addComponent(simulatorDisplayPanel_label_process)
-					.addGap(111)
+					.addGap(94)
 					.addComponent(simulatorDisplayPanel_label_progress)
-					.addGap(31)
+					.addGap(48)
 					.addGroup(gl_simulatorDisplayPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_simulatorDisplayPanel.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED, 276, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 210, Short.MAX_VALUE)
 							.addGroup(gl_simulatorDisplayPanel.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_simulatorDisplayPanel.createSequentialGroup()
 									.addComponent(simulatorDisplayPanel_label_timeQuantum)
@@ -669,206 +665,150 @@ public class Main extends JFrame {
 		);
 		simulatorDisplayPanel.setLayout(gl_simulatorDisplayPanel);
 		
-		set_simulator_control();
-		
-		// *** Set Layout
-		
 		GroupLayout gl_simulatorControlPanel = new GroupLayout(simulatorControlPanel);
+		gl_simulatorControlPanel.setHorizontalGroup(
+			gl_simulatorControlPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_simulatorControlPanel.createSequentialGroup()
+					.addGap(25)
+					.addComponent(control_simulate)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_simulatorControlPanel.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_simulatorControlPanel.createSequentialGroup()
+							.addComponent(control_step, GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(control_back))
+						.addGroup(gl_simulatorControlPanel.createSequentialGroup()
+							.addComponent(control_pauseResume, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(control_reset, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)))
+					.addGap(19))
+		);
+		gl_simulatorControlPanel.setVerticalGroup(
+			gl_simulatorControlPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_simulatorControlPanel.createSequentialGroup()
+					.addGroup(gl_simulatorControlPanel.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(control_simulate, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_simulatorControlPanel.createSequentialGroup()
+							.addGroup(gl_simulatorControlPanel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(control_pauseResume)
+								.addComponent(control_reset))
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addGroup(gl_simulatorControlPanel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(control_step)
+								.addComponent(control_back))))
+					.addContainerGap(23, Short.MAX_VALUE))
+		);
 		simulatorControlPanel.setLayout(gl_simulatorControlPanel);
-		gl_simulatorControlPanel.setHorizontalGroup(gl_simulatorControlPanel
-		        .createParallelGroup( GroupLayout.Alignment.LEADING)
-		        .addGroup(gl_simulatorControlPanel.createSequentialGroup().addGroup(gl_simulatorControlPanel
-		                .createParallelGroup( GroupLayout.Alignment.LEADING)
-		                .addGroup(gl_simulatorControlPanel.createSequentialGroup().addContainerGap()
-		                        .addComponent(control_simulate).addGap(1, 1, 1).addComponent(control_pauseResume)
-		                        .addPreferredGap( LayoutStyle.ComponentPlacement.RELATED)
-		                        .addComponent(control_step,  GroupLayout.PREFERRED_SIZE, 72,
-		                                 GroupLayout.PREFERRED_SIZE))
-		                .addGroup(gl_simulatorControlPanel.createSequentialGroup().addGap(102, 102, 102)
-		                        .addComponent(control_reset)
-		                        .addPreferredGap( LayoutStyle.ComponentPlacement.RELATED)
-		                        .addComponent(control_back)))
-		                .addContainerGap(40, Short.MAX_VALUE)));
-		gl_simulatorControlPanel.setVerticalGroup(gl_simulatorControlPanel
-		        .createParallelGroup( GroupLayout.Alignment.LEADING)
-		        .addGroup(gl_simulatorControlPanel.createSequentialGroup().addGroup(gl_simulatorControlPanel
-		                .createParallelGroup( GroupLayout.Alignment.BASELINE)
-		                .addComponent(control_simulate).addComponent(control_pauseResume).addComponent(control_step))
-		                .addPreferredGap( LayoutStyle.ComponentPlacement.RELATED,
-		                         GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-		                .addGroup(gl_simulatorControlPanel
-		                        .createParallelGroup( GroupLayout.Alignment.BASELINE)
-		                        .addComponent(control_back).addComponent(control_reset))
-		                .addGap(109, 109, 109)));
-		
-		
-		
-		set_simulator_speed();
 		
 		GroupLayout gl_simulatorSpeedPanel = new GroupLayout(simulatorSpeedPanel);
+		gl_simulatorSpeedPanel.setHorizontalGroup(
+			gl_simulatorSpeedPanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_simulatorSpeedPanel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_simulatorSpeedPanel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(simulatorSpeedSlider, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+						.addGroup(gl_simulatorSpeedPanel.createSequentialGroup()
+							.addComponent(simulatorSpeed_label_slow)
+							.addPreferredGap(ComponentPlacement.RELATED, 198, Short.MAX_VALUE)
+							.addComponent(simulatorSpeed_label_fast)))
+					.addGap(21))
+		);
+		gl_simulatorSpeedPanel.setVerticalGroup(
+			gl_simulatorSpeedPanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_simulatorSpeedPanel.createSequentialGroup()
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(simulatorSpeedSlider, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_simulatorSpeedPanel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(simulatorSpeed_label_fast)
+						.addComponent(simulatorSpeed_label_slow))
+					.addContainerGap())
+		);
 		simulatorSpeedPanel.setLayout(gl_simulatorSpeedPanel);
-		gl_simulatorSpeedPanel.setHorizontalGroup(gl_simulatorSpeedPanel
-		        .createParallelGroup( GroupLayout.Alignment.LEADING)
-		        .addGroup(gl_simulatorSpeedPanel.createSequentialGroup().addContainerGap()
-		                .addGroup(gl_simulatorSpeedPanel
-		                        .createParallelGroup( GroupLayout.Alignment.LEADING)
-		                        .addGroup(gl_simulatorSpeedPanel.createSequentialGroup()
-		                                .addComponent(simulatorSpeedSlider,
-		                                         GroupLayout.PREFERRED_SIZE, 160,
-		                                         GroupLayout.PREFERRED_SIZE)
-		                                .addContainerGap( GroupLayout.DEFAULT_SIZE,
-		                                        Short.MAX_VALUE))
-		                        .addGroup(gl_simulatorSpeedPanel.createSequentialGroup()
-		                                .addComponent(simulatorSpeed_label_slow)
-		                                .addPreferredGap(
-		                                         LayoutStyle.ComponentPlacement.RELATED,
-		                                         GroupLayout.DEFAULT_SIZE,
-		                                        Short.MAX_VALUE)
-		                                .addComponent(simulatorSpeed_label_fast).addGap(21, 21, 21)))));
-		gl_simulatorSpeedPanel.setVerticalGroup(gl_simulatorSpeedPanel
-		        .createParallelGroup(GroupLayout.Alignment.LEADING)
-		        .addGroup(gl_simulatorSpeedPanel.createSequentialGroup()
-		                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-		                .addComponent(simulatorSpeedSlider, GroupLayout.PREFERRED_SIZE, 24,
-		                        GroupLayout.PREFERRED_SIZE)
-		                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-		                .addGroup(gl_simulatorSpeedPanel
-		                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
-		                        .addComponent(simulatorSpeed_label_slow)
-		                        .addComponent(simulatorSpeed_label_fast))
-		                .addContainerGap()));
-		
-		
-		set_simulator_results();
-		
 		
 		GroupLayout gl_simulatorResultsPanel = new GroupLayout(simulatorResultsPanel);
+		gl_simulatorResultsPanel.setHorizontalGroup(
+			gl_simulatorResultsPanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_simulatorResultsPanel.createSequentialGroup()
+					.addGap(23)
+					.addGroup(gl_simulatorResultsPanel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(simulatorResults_button_detailedResults, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 326, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_simulatorResultsPanel.createSequentialGroup()
+							.addGroup(gl_simulatorResultsPanel.createParallelGroup(Alignment.LEADING)
+								.addComponent(simulatorResults_label_avgTurnAroundTime)
+								.addComponent(simulatorResults_label_avgWaitingTime))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_simulatorResultsPanel.createParallelGroup(Alignment.TRAILING)
+								.addGroup(gl_simulatorResultsPanel.createSequentialGroup()
+									.addGap(74)
+									.addComponent(simulatorResults_label_avgWaitingTimeCalc, GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE))
+								.addComponent(simulatorResults_label_avgTurnAroundTimeCalc, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE))))
+					.addGap(30))
+		);
+		gl_simulatorResultsPanel.setVerticalGroup(
+			gl_simulatorResultsPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_simulatorResultsPanel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_simulatorResultsPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(simulatorResults_label_avgWaitingTimeCalc, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(simulatorResults_label_avgWaitingTime))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_simulatorResultsPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(simulatorResults_label_avgTurnAroundTimeCalc, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(simulatorResults_label_avgTurnAroundTime))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(simulatorResults_button_detailedResults)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
 		simulatorResultsPanel.setLayout(gl_simulatorResultsPanel);
-		gl_simulatorResultsPanel.setHorizontalGroup(gl_simulatorResultsPanel
-		        .createParallelGroup(GroupLayout.Alignment.LEADING)
-		        .addGroup(gl_simulatorResultsPanel.createSequentialGroup().addContainerGap()
-		                .addGroup(gl_simulatorResultsPanel
-		                        .createParallelGroup(GroupLayout.Alignment.LEADING)
-		                        .addGroup(gl_simulatorResultsPanel.createSequentialGroup()
-		                                .addComponent(simulatorResults_label_avgWaitingTime)
-		                                .addPreferredGap(
-		                                         LayoutStyle.ComponentPlacement.UNRELATED)
-		                                .addComponent(simulatorResults_label_avgWaitingTimeCalc,
-		                                         GroupLayout.PREFERRED_SIZE, 56,
-		                                         GroupLayout.PREFERRED_SIZE))
-		                        .addGroup(gl_simulatorResultsPanel.createSequentialGroup()
-		                                .addGroup(gl_simulatorResultsPanel
-		                                        .createParallelGroup(
-		                                                 GroupLayout.Alignment.TRAILING, false)
-		                                        .addComponent(simulatorResults_button_detailedResults,
-		                                                 GroupLayout.Alignment.LEADING,
-		                                                 GroupLayout.DEFAULT_SIZE,
-		                                                 GroupLayout.DEFAULT_SIZE,
-		                                                Short.MAX_VALUE)
-		                                        .addComponent(simulatorResults_label_avgTurnAroundTime,
-		                                                 GroupLayout.Alignment.LEADING,
-		                                                 GroupLayout.DEFAULT_SIZE,
-		                                                 GroupLayout.DEFAULT_SIZE,
-		                                                Short.MAX_VALUE))
-		                                .addPreferredGap(
-		                                         LayoutStyle.ComponentPlacement.RELATED)
-		                                .addComponent(simulatorResults_label_avgTurnAroundTimeCalc,
-		                                         GroupLayout.PREFERRED_SIZE, 56,
-		                                         GroupLayout.PREFERRED_SIZE)))
-		                .addContainerGap(96, Short.MAX_VALUE)));
-		gl_simulatorResultsPanel.setVerticalGroup(gl_simulatorResultsPanel
-		        .createParallelGroup( GroupLayout.Alignment.LEADING)
-		        .addGroup(gl_simulatorResultsPanel.createSequentialGroup().addContainerGap()
-		                .addGroup(gl_simulatorResultsPanel
-		                        .createParallelGroup( GroupLayout.Alignment.BASELINE)
-		                        .addComponent(simulatorResults_label_avgWaitingTime).addComponent(simulatorResults_label_avgWaitingTimeCalc,
-		                                 GroupLayout.PREFERRED_SIZE,
-		                                 GroupLayout.DEFAULT_SIZE,
-		                                 GroupLayout.PREFERRED_SIZE))
-		                .addPreferredGap( LayoutStyle.ComponentPlacement.UNRELATED)
-		                .addGroup(gl_simulatorResultsPanel
-		                        .createParallelGroup( GroupLayout.Alignment.BASELINE)
-		                        .addComponent(simulatorResults_label_avgTurnAroundTime).addComponent(simulatorResults_label_avgTurnAroundTimeCalc,
-		                                 GroupLayout.PREFERRED_SIZE,
-		                                 GroupLayout.DEFAULT_SIZE,
-		                                 GroupLayout.PREFERRED_SIZE))
-		                .addPreferredGap( LayoutStyle.ComponentPlacement.RELATED)
-		                .addComponent(simulatorResults_button_detailedResults).addContainerGap(24, Short.MAX_VALUE)));
 		
 		GroupLayout gl_tab_simulator = new GroupLayout(tab_simulator);
+		gl_tab_simulator.setHorizontalGroup(
+			gl_tab_simulator.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_tab_simulator.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_tab_simulator.createParallelGroup(Alignment.TRAILING)
+						.addComponent(simulatorDisplayPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 708, Short.MAX_VALUE)
+						.addGroup(gl_tab_simulator.createSequentialGroup()
+							.addGroup(gl_tab_simulator.createParallelGroup(Alignment.LEADING)
+								.addComponent(simulatorSpeedPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addGroup(gl_tab_simulator.createSequentialGroup()
+									.addComponent(simulator_label_CPU_selectedProcess)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(simulator_label_CPU_selectedProcess_selected))
+								.addComponent(CPU_ProgressBar, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+								.addComponent(simulator_label_CPU_clock))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_tab_simulator.createParallelGroup(Alignment.LEADING)
+								.addComponent(simulatorResultsPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(simulatorControlPanel, GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE))))
+					.addGap(82))
+		);
+		gl_tab_simulator.setVerticalGroup(
+			gl_tab_simulator.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_tab_simulator.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(simulatorDisplayPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_tab_simulator.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(gl_tab_simulator.createSequentialGroup()
+							.addGap(9)
+							.addComponent(simulator_label_CPU_clock)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(CPU_ProgressBar, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_tab_simulator.createParallelGroup(Alignment.BASELINE)
+								.addComponent(simulator_label_CPU_selectedProcess)
+								.addComponent(simulator_label_CPU_selectedProcess_selected))
+							.addGap(26)
+							.addComponent(simulatorSpeedPanel, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_tab_simulator.createSequentialGroup()
+							.addComponent(simulatorControlPanel, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(simulatorResultsPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
+		);
 		tab_simulator.setLayout(gl_tab_simulator);
-		gl_tab_simulator.setHorizontalGroup(gl_tab_simulator
-		        .createParallelGroup( GroupLayout.Alignment.LEADING)
-		        .addGroup(gl_tab_simulator.createSequentialGroup().addContainerGap()
-		                .addGroup(gl_tab_simulator
-		                        .createParallelGroup( GroupLayout.Alignment.LEADING)
-		                        .addComponent(simulatorDisplayPanel,  GroupLayout.PREFERRED_SIZE,
-		                                 GroupLayout.DEFAULT_SIZE,
-		                                 GroupLayout.PREFERRED_SIZE)
-		                        .addGroup(gl_tab_simulator.createSequentialGroup()
-		                                .addGroup(gl_tab_simulator
-		                                        .createParallelGroup(
-		                                                 GroupLayout.Alignment.LEADING)
-		                                        .addComponent(CPU_ProgressBar,
-		                                                 GroupLayout.PREFERRED_SIZE, 308,
-		                                                 GroupLayout.PREFERRED_SIZE)
-		                                        .addComponent(simulator_label_CPU_clock)
-		                                        .addGroup(gl_tab_simulator.createSequentialGroup()
-		                                                .addComponent(simulator_label_CPU_selectedProcess)
-		                                                .addPreferredGap(
-		                                                         LayoutStyle.ComponentPlacement.UNRELATED)
-		                                                .addComponent(simulator_label_CPU_selectedProcess_selected))
-		                                        .addComponent(simulatorSpeedPanel,
-		                                                 GroupLayout.PREFERRED_SIZE,
-		                                                 GroupLayout.DEFAULT_SIZE,
-		                                                 GroupLayout.PREFERRED_SIZE))
-		                                .addPreferredGap(
-		                                         LayoutStyle.ComponentPlacement.RELATED)
-		                                .addGroup(gl_tab_simulator
-		                                        .createParallelGroup(
-		                                                 GroupLayout.Alignment.LEADING)
-		                                        .addComponent(simulatorControlPanel,
-		                                                 GroupLayout.PREFERRED_SIZE,
-		                                                 GroupLayout.DEFAULT_SIZE,
-		                                                 GroupLayout.PREFERRED_SIZE)
-		                                        .addComponent(simulatorResultsPanel,
-		                                                 GroupLayout.PREFERRED_SIZE,
-		                                                 GroupLayout.DEFAULT_SIZE,
-		                                                 GroupLayout.PREFERRED_SIZE))))
-		                .addContainerGap(69, Short.MAX_VALUE)));
-		gl_tab_simulator.setVerticalGroup(gl_tab_simulator
-		        .createParallelGroup( GroupLayout.Alignment.LEADING)
-		        .addGroup(gl_tab_simulator.createSequentialGroup().addContainerGap()
-		                .addComponent(simulatorDisplayPanel,  GroupLayout.PREFERRED_SIZE,
-		                         GroupLayout.DEFAULT_SIZE,
-		                         GroupLayout.PREFERRED_SIZE)
-		                .addPreferredGap( LayoutStyle.ComponentPlacement.RELATED)
-		                .addGroup(gl_tab_simulator
-		                        .createParallelGroup( GroupLayout.Alignment.TRAILING)
-		                        .addGroup(gl_tab_simulator.createSequentialGroup()
-		                                .addComponent(simulator_label_CPU_clock)
-		                                .addPreferredGap(
-		                                         LayoutStyle.ComponentPlacement.RELATED)
-		                                .addComponent(CPU_ProgressBar,
-		                                         GroupLayout.PREFERRED_SIZE, 54,
-		                                         GroupLayout.PREFERRED_SIZE)
-		                                .addPreferredGap(
-		                                         LayoutStyle.ComponentPlacement.RELATED)
-		                                .addGroup(gl_tab_simulator
-		                                        .createParallelGroup(
-		                                                 GroupLayout.Alignment.BASELINE)
-		                                        .addComponent(simulator_label_CPU_selectedProcess).addComponent(simulator_label_CPU_selectedProcess_selected)))
-		                        .addComponent(simulatorControlPanel,  GroupLayout.PREFERRED_SIZE, 101,
-		                                 GroupLayout.PREFERRED_SIZE))
-		                .addPreferredGap( LayoutStyle.ComponentPlacement.RELATED)
-		                .addGroup(gl_tab_simulator
-		                        .createParallelGroup( GroupLayout.Alignment.LEADING)
-		                        .addComponent(simulatorResultsPanel,  GroupLayout.PREFERRED_SIZE,
-		                                 GroupLayout.DEFAULT_SIZE,
-		                                 GroupLayout.PREFERRED_SIZE)
-		                        .addComponent(simulatorSpeedPanel,  GroupLayout.PREFERRED_SIZE, 87,
-		                                 GroupLayout.PREFERRED_SIZE))
-		                .addContainerGap(63, Short.MAX_VALUE)));
 		
 		
 		jTabbedPane.addTab("Process Information", tab_processInfo);
@@ -977,7 +917,6 @@ public class Main extends JFrame {
 	}
 	
 	private void onClick_control_Simulate(ActionEvent evt) {
-		
 		initSimulator();
 		controller.setCont(false);
 		
@@ -986,7 +925,6 @@ public class Main extends JFrame {
 		control_back.setEnabled(false);
 		control_pauseResume.setEnabled(true);
 		control_reset.setEnabled(false);
-		
 	}
 	
 	private void resetAction() {
@@ -1006,13 +944,11 @@ public class Main extends JFrame {
 	}
 	
 	private void onClick_control_PauseResume(ActionEvent evt) {
-		
 		if (controller.isPaused()) {
 			controller.setPaused(false);
 		} else {
 			controller.setPaused(true);
 		}
-		
 	}
 	
 	private void onClick_control_step(ActionEvent evt) {
@@ -1208,9 +1144,9 @@ public class Main extends JFrame {
 	
 	private void onClick_tabChange(ChangeEvent evt) {
 		if (jTabbedPane.getSelectedIndex() == 0) {
-			this.setSize(780, 600);
+			this.setSize(780, 570);
 		} else {
-			this.setSize(780, 800);
+			this.setSize(780, 780);
 		}
 		this.repaint();
 		this.revalidate();

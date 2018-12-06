@@ -11,13 +11,14 @@ package cpuschedulingsimulator;
 
 import java.awt.Component;
 import java.util.LinkedList;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 
 
-public class Controller {
+public class Controller extends JFrame {
 	
 	private boolean paused;
 	JProgressBar clockCycle;
